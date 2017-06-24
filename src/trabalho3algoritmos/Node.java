@@ -13,6 +13,7 @@ public class Node {
 
     public Node(char element) {
         this.father = null;
+        this.brother = null;
         this.element = element;
         this.subtrees = new LinkedListOfNodes();
         this.terminouPalavra = false;
@@ -27,6 +28,10 @@ public class Node {
     
     public void finalizaPalavra(){
         this.terminouPalavra = true;
+    }
+    
+    public boolean getTerminouPalavra(){
+        return this.terminouPalavra;
     }
     
     public void addSubtrees(char el) {

@@ -50,10 +50,11 @@ public class Arvore {
     }
 
     public void add(String element) {
+        Node nodo = getNode(element);
         if (contains(element)) {
+            nodo.finalizaPalavra();
             return;
         }
-        Node nodo = getNode(element);
         String resto = getString(element);
         char variavel = 0;
         for (int i = 0; i < resto.length(); i++) {
@@ -62,6 +63,7 @@ public class Arvore {
             nodo = nodo.getSubtree(nodo.getSubtreesSize() - 1);
         }
         nodo.finalizaPalavra();
+        
         count++;
     }
 
@@ -88,10 +90,77 @@ public class Arvore {
                         fila.enqueue(aux.getSubtree(i));
                     }
                 }
-                li.add(aux.element);
+                li.add(aux);
             }
         }
         return li;
+    }
+
+    public String pesquisarPalavrasQueComecamComDeterminadaString(String prefixo) throws Exception {
+        StringBuilder buffer = new StringBuilder();
+        Node nodo = getNode(prefixo);
+        LinkedListOfCharHelper lista = new LinkedListOfCharHelper();
+        Stack<String> palavras = new Stack();
+        int contador = 0;
+        if (nodo.equals(this.root)) {
+            buffer.append("Não há palavras que comecem com este prefixo.");
+        } else {
+            buffer.append(prefixo);
+            if (nodo.getTerminouPalavra()) {
+                buffer.append("\n");
+            }
+            if (nodo.getSubtreesSize() > 0) {
+                lista = positionsPre(nodo, new LinkedListOfCharHelper(), contador);
+            }
+            for (int i = 1; i < lista.size(); i++) {
+                LinkedListOfCharHelper.Node aux = lista.getNode(i);
+                buffer.append(aux.element);
+                if (aux.getTerminouPalavra()) {
+                    if (aux.getQuantidadeDeNodosFilhos() > 0) {
+                        String[] array = buffer.toString().split("\n");
+                        String ultimaPalavra = array[array.length - 1];
+                        buffer.append("\n");
+                        if (!palavras.isEmpty()) {
+                            buffer.append(palavras.pop());
+                        } else {
+                            buffer.append(ultimaPalavra);
+                        }
+                    } else if (i < lista.size() - 1) {
+                        buffer.append("\n");
+                        if (!palavras.isEmpty()) {
+                            buffer.append(palavras.pop());
+                        } else {
+                            buffer.append(prefixo);
+                        }
+                    }
+                }
+                if (aux.getQuantidadeDeNodosFilhos() > 1) {
+                    String[] array = buffer.toString().split("\n");
+                    String ultimaPalavra = array[array.length - 1];
+                    for (int j = 0; j < aux.getQuantidadeDeNodosFilhos() - 1; j++) {
+                        palavras.push(ultimaPalavra);
+                    }
+                }
+            }
+        }
+        return buffer.toString();
+    }
+
+    private LinkedListOfCharHelper positionsPre(Node n, LinkedListOfCharHelper res, int contador) {
+        if (n == null) {
+            return null;
+        }
+        contador++;
+        res.add(n.element, n.getTerminouPalavra(), n.getSubtreesSize(),
+                (n.father.getSubtreesSize() - 1));
+        Node aux = n;
+        if (aux.getSubtreesSize() > 0) {
+            positionsPre(aux.getSubtree(0), res, contador);
+        }
+        if (aux.brother != null && contador > 1) {
+            positionsPre(aux.brother, res, contador);
+        }
+        return res;
     }
 
     public Node getNode(String element) {

@@ -6,13 +6,21 @@ public class LinkedListOfNodes {
     private Node tail;
     private int count;
 
+    public LinkedListOfNodes() {
+        head = null;
+        tail = null;
+        count = 0;
+    }
+
     public void add(Node n) {
         if (head == null) {
             head = n;
+            head.father = n.father;
         } else {
             tail.brother = n;
         }
         tail = n;
+        tail.father = n.father;
         count++;
     }
 
@@ -26,17 +34,6 @@ public class LinkedListOfNodes {
         }
         tail = aux;
         tail.father = father;
-        count++;
-    }
-
-    public void add(char element) {
-        Node aux = new Node(element);
-        if (head == null) {
-            head = aux;
-        } else {
-            tail.brother = aux;
-        }
-        tail = aux;
         count++;
     }
 
