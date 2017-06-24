@@ -19,10 +19,10 @@ public class App {
             arvore.add("parada");
             arvore.add("para");
             System.out.println(arvore.toString());
-            System.out.println("\nPrimeira pesquisa:\n" + arvore.pesquisarPalavrasQueComecamComDeterminadaString("g"));
-            System.out.println("\nSegunda pesquisa:\n" + arvore.pesquisarPalavrasQueComecamComDeterminadaString("a"));
-            System.out.println("\nTerceira pesquisa:\n" + arvore.pesquisarPalavrasQueComecamComDeterminadaString("pre"));
-            System.out.println("\nQuarta pesquisa:\n" + arvore.pesquisarPalavrasQueComecamComDeterminadaString("p"));
+            System.out.println("\nPrimeira pesquisa:\n" + arvore.pesquisarPalavrasQueComecamComDeterminadoPrefixo("g"));
+            System.out.println("\nSegunda pesquisa:\n" + arvore.pesquisarPalavrasQueComecamComDeterminadoPrefixo("a"));
+            System.out.println("\nTerceira pesquisa:\n" + arvore.pesquisarPalavrasQueComecamComDeterminadoPrefixo("pre"));
+            System.out.println("\nQuarta pesquisa:\n" + arvore.pesquisarPalavrasQueComecamComDeterminadoPrefixo("p"));
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }

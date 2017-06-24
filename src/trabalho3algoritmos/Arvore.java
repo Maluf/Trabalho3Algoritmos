@@ -3,19 +3,25 @@ package trabalho3algoritmos;
 public class Arvore {
 
     private Node root;
-    private int count;
+    private int quantidadeDeNodos;
+    private int quantidadeDePalavras;
 
     public Arvore() {
         root = null;
-        count = 0;
+        quantidadeDeNodos = 0;
+        quantidadeDePalavras = 0;
     }
 
     public boolean isEmpty() {
         return (root == null);
     }
 
-    public int size() {
-        return count;
+    public int getQuantidadeDeNodos() {
+        return quantidadeDeNodos;
+    }
+    
+    public int getQuantidadeDePalavras() {
+        return quantidadeDePalavras;
     }
 
     public char getRoot() {
@@ -32,20 +38,18 @@ public class Arvore {
         root.element = element;
     }
 
-    public String getParent(String element) {
-        // Implementar
-        return null;
+    public char getParent(char element) {
+        Node nodo = searchNodeRef(element, root);
+        return nodo.father.element;
     }
 
     public boolean addRoot(char element) {
-        //Implementar
         if (root != null) {
             return false;
         }
-
         Node node = new Node(element);
         root = node;
-        count++;
+        quantidadeDeNodos++;
         return true;
     }
 
@@ -53,6 +57,7 @@ public class Arvore {
         Node nodo = getNode(element);
         if (contains(element)) {
             nodo.finalizaPalavra();
+            quantidadeDePalavras++;
             return;
         }
         String resto = getString(element);
@@ -60,11 +65,11 @@ public class Arvore {
         for (int i = 0; i < resto.length(); i++) {
             variavel = resto.charAt(i);
             nodo.addSubtrees(variavel);
+            quantidadeDeNodos++;
             nodo = nodo.getSubtree(nodo.getSubtreesSize() - 1);
         }
-        nodo.finalizaPalavra();
-        
-        count++;
+        nodo.finalizaPalavra();        
+        quantidadeDePalavras++;
     }
 
     public void add(char element, Node father) {
@@ -72,7 +77,8 @@ public class Arvore {
         nodo.addSubtrees(element);
         nodo = nodo.getSubtree(nodo.getSubtreesSize() - 1);
         nodo.finalizaPalavra();
-        count++;
+        quantidadeDeNodos++;
+        quantidadeDePalavras++;
     }
 
     public LinkedListOfNodes positionsWidth() {
@@ -82,9 +88,7 @@ public class Arvore {
         if (root != null) {
             fila.enqueue(root);
             while (!fila.isEmpty()) {
-
                 aux = fila.dequeue();
-
                 if (aux.subtrees != null) {
                     for (int i = 0; i < aux.getSubtreesSize(); i++) {
                         fila.enqueue(aux.getSubtree(i));
@@ -96,7 +100,7 @@ public class Arvore {
         return li;
     }
 
-    public String pesquisarPalavrasQueComecamComDeterminadaString(String prefixo) throws Exception {
+    public String pesquisarPalavrasQueComecamComDeterminadoPrefixo(String prefixo) throws Exception {
         StringBuilder buffer = new StringBuilder();
         Node nodo = getNode(prefixo);
         LinkedListOfCharHelper lista = new LinkedListOfCharHelper();
@@ -260,26 +264,10 @@ public class Arvore {
         return res;
     }
 
-    private Node searchNodeRef(String element, Node target) {
-        Node res = null;
-        if (target != null) {
-            if (target.equals(element)) {
-                res = target;
-            } else {
-                if (target.getSubtreesSize() > 0) {
-                    for (int i = 0; i < target.getSubtreesSize(); i++) {
-                        res = searchNodeRef(element, target.getSubtree(i));
-                    }
-                }
-            }
-        }
-        return res;
-    }
-
     private Node searchNodeRef(char element, Node target) {
         Node res = null;
         if (target != null) {
-            if (target.equals(element)) {
+            if (target.element == (element)) {
                 res = target;
             } else {
                 if (target.getSubtreesSize() > 0) {
