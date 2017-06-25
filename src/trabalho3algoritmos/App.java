@@ -5,7 +5,6 @@ public class App {
     public static void main(String[] args) {
         try {
             Arvore arvore = new Arvore();
-            arvore.addRoot('0');
             arvore.add("guilherme");
             arvore.add("gilberto");
             arvore.add("amor");

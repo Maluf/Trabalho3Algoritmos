@@ -7,9 +7,8 @@ public class Arvore {
     private int quantidadeDePalavras;
 
     public Arvore() {
-        root = null;
-        quantidadeDeNodos = 0;
         quantidadeDePalavras = 0;
+        addRoot('#');
     }
 
     public boolean isEmpty() {
@@ -43,14 +42,10 @@ public class Arvore {
         return nodo.father.element;
     }
 
-    public boolean addRoot(char element) {
-        if (root != null) {
-            return false;
-        }
+    private void addRoot(char element) {
         Node node = new Node(element);
         root = node;
         quantidadeDeNodos++;
-        return true;
     }
 
     public void add(String element) {
