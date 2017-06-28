@@ -15,15 +15,16 @@ public class App {
             arvore.add("premeditado");
             arvore.add("pararaio");
             arvore.add("giles");
-            arvore.add("parada");
             arvore.add("para");
+            arvore.add("parada");
+            
             System.out.println(arvore.toString());
             System.out.println("\nPrimeira pesquisa:\n" + arvore.pesquisarPalavrasQueComecamComDeterminadoPrefixo("g"));
             System.out.println("\nSegunda pesquisa:\n" + arvore.pesquisarPalavrasQueComecamComDeterminadoPrefixo("a"));
             System.out.println("\nTerceira pesquisa:\n" + arvore.pesquisarPalavrasQueComecamComDeterminadoPrefixo("pre"));
             System.out.println("\nQuarta pesquisa:\n" + arvore.pesquisarPalavrasQueComecamComDeterminadoPrefixo("p"));
         } catch (Exception e) {
-            System.out.println("Erro: " + e.getMessage());
+            System.out.println("\nErro: " + e.getMessage());
         }
     }
 }
