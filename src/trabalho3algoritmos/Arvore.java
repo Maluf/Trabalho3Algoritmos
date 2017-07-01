@@ -1,14 +1,20 @@
 package trabalho3algoritmos;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 public class Arvore {
 
     private Node root;
     private int quantidadeDeNodos;
     private int quantidadeDePalavras;
+    private String arquivo;
 
-    public Arvore() {
+    public Arvore(String arquivo) throws Exception {
         quantidadeDePalavras = 0;
         addRoot('#');
+        this.arquivo = arquivo;
+        lerArquivo();
     }
 
     public boolean isEmpty() {
@@ -18,7 +24,7 @@ public class Arvore {
     public int getQuantidadeDeNodos() {
         return quantidadeDeNodos;
     }
-    
+
     public int getQuantidadeDePalavras() {
         return quantidadeDePalavras;
     }
@@ -48,10 +54,10 @@ public class Arvore {
         quantidadeDeNodos++;
     }
 
-    public void add(String element) {
+    public void add(String element, String significado) {
         Node nodo = getNode(element);
         if (contains(element)) {
-            nodo.finalizaPalavra();
+            nodo.finalizaPalavra(significado);
             quantidadeDePalavras++;
             return;
         }
@@ -63,15 +69,15 @@ public class Arvore {
             quantidadeDeNodos++;
             nodo = nodo.getSubtree(nodo.getSubtreesSize() - 1);
         }
-        nodo.finalizaPalavra();        
+        nodo.finalizaPalavra(significado);
         quantidadeDePalavras++;
     }
 
-    public void add(char element, Node father) {
+    public void add(char element, Node father, String significado) {
         Node nodo = searchNodeRef(father, root);
         nodo.addSubtrees(element);
         nodo = nodo.getSubtree(nodo.getSubtreesSize() - 1);
-        nodo.finalizaPalavra();
+        nodo.finalizaPalavra(significado);
         quantidadeDeNodos++;
         quantidadeDePalavras++;
     }
@@ -95,7 +101,21 @@ public class Arvore {
         return li;
     }
 
-    public String pesquisarPalavrasQueComecamComDeterminadoPrefixo(String prefixo) throws Exception {
+    public String imprimePalavrasESeusSignificados(String prefixo) throws Exception {
+        String palavras = pesquisarPalavrasQueComecamComDeterminadoPrefixo(prefixo);
+        String[] array = palavras.split("\n");
+        StringBuilder buffer = new StringBuilder();
+        for (int i = 0; i < array.length; i++) {
+            buffer.append("\nPalavra: ");
+            buffer.append(array[i]);
+            Node nodo = getNode(array[i]);
+            buffer.append("\nSignificado: ");
+            buffer.append(nodo.significado);
+        }
+        return buffer.toString();
+    }
+
+    private String pesquisarPalavrasQueComecamComDeterminadoPrefixo(String prefixo) throws Exception {
         StringBuilder buffer = new StringBuilder();
         Node nodo = getNode(prefixo);
         LinkedListOfCharHelper lista = new LinkedListOfCharHelper();
@@ -105,9 +125,6 @@ public class Arvore {
             buffer.append("Não há palavras que comecem com este prefixo.");
         } else {
             buffer.append(prefixo);
-            if (nodo.getTerminouPalavra()) {
-                buffer.append("\n");
-            }
             if (nodo.getSubtreesSize() > 0) {
                 lista = positionsPre(nodo, new LinkedListOfCharHelper(), contador);
             }
@@ -133,6 +150,7 @@ public class Arvore {
                         }
                     }
                 }
+
                 if (aux.getQuantidadeDeNodosFilhos() > 1) {
                     String[] array = buffer.toString().split("\n");
                     String ultimaPalavra = array[array.length - 1];
@@ -140,6 +158,7 @@ public class Arvore {
                         palavras.push(ultimaPalavra);
                     }
                 }
+
             }
         }
         return buffer.toString();
@@ -151,7 +170,7 @@ public class Arvore {
         }
         contador++;
         res.add(n.element, n.getTerminouPalavra(), n.getSubtreesSize(),
-                (n.father.getSubtreesSize() - 1));
+                (n.father.getSubtreesSize() - 1), n.significado);
         Node aux = n;
         if (aux.getSubtreesSize() > 0) {
             positionsPre(aux.getSubtree(0), res, contador);
@@ -275,6 +294,19 @@ public class Arvore {
         return res;
     }
 
+    private void lerArquivo() throws Exception {
+        if (this.arquivo == null || "".equals(this.arquivo)) {
+            throw new Exception("Arquivo inexistente!");
+        }
+        try (BufferedReader file = new BufferedReader(new FileReader(arquivo))) {
+            String[] linha;
+            while (file.ready()) {
+                linha = file.readLine().split(";");
+                add(linha[0], linha[1]);
+            }
+        }
+    }
+
     @Override
     public String toString() {
         if (isEmpty()) {
@@ -285,5 +317,9 @@ public class Arvore {
         buffer.append("\n");
         buffer.append(this.root.toString());
         return buffer.toString();
+    }
+
+    private void cath() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

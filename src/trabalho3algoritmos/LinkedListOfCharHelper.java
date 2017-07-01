@@ -14,15 +14,18 @@ public class LinkedListOfCharHelper {
         public boolean terminouPalavra;
         public int quantidadeDeNodosFilhos;
         public int quantidadeDeIrmaos;
+        public String significado;
         
         public Node(char element) {
             this.element = element;
             next = null;
+            this.significado = null;
         }
         
         public Node(char element, Node next) {
             this.element = element;
             this.next = next;
+            this.significado = next.significado;
         }
         
         public boolean getTerminouPalavra(){
@@ -54,11 +57,12 @@ public class LinkedListOfCharHelper {
         count = 0;
     }
     
-    public void add(char element, boolean terminou, int quantidadeFilhos, int quantidadeIrmaos) {
+    public void add(char element, boolean terminou, int quantidadeFilhos, int quantidadeIrmaos, String significado) {
         Node aux = new Node(element);
         aux.terminouPalavra = terminou;
         aux.quantidadeDeNodosFilhos = quantidadeFilhos;
         aux.quantidadeDeIrmaos = quantidadeIrmaos;
+        aux.significado = significado;
         if (head == null) {
             head = aux;
         } else {
