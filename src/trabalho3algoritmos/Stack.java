@@ -5,7 +5,7 @@ public class Stack<E> {
     private int count;
     private Node head;
     private Node tail;
-    
+
     private class Node {
 
         private E element;
@@ -55,20 +55,22 @@ public class Stack<E> {
         Node nodo = tail;
         Node prev = head;
         Node atual = null;
-        if(count == 1){
+        if (count == 1) {
             head = null;
             tail = null;
-        }else{
+        } else {
             atual = head.next;
-            while(atual != null){
-                if(atual.equals(tail)){
+            while (atual != null) {
+                if (atual.equals(tail)) {
                     tail = prev;
                     prev.next = prev.next.next;
                     atual = null;
+                } else {
+                    prev = prev.next;
+                    atual = atual.next;
                 }
             }
-            
-        }        
+        }
         count--;
         return nodo.element;
     }

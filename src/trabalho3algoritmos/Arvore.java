@@ -100,7 +100,24 @@ public class Arvore {
         }
         return li;
     }
-
+    
+    public String imprimeAPalavraESeuSignificado(String prefixo, String palavra) throws Exception{
+        Node nodo = getNode(palavra);
+        if(nodo.significado == null || nodo.significado.equals("")){
+            throw new Exception("Não achou a palavra.");
+        }
+        String palavras = pesquisarPalavrasQueComecamComDeterminadoPrefixo(prefixo);
+        for(int i = 0; i < prefixo.length(); i++){
+            if(prefixo.charAt(i) != palavra.charAt(i)){
+                throw new Exception("Não achou a palavra.");
+            }
+        }
+        StringBuilder buffer = new StringBuilder();
+        buffer.append("Significado da palavra pesquisada: ");
+        buffer.append(nodo.significado);
+        return buffer.toString();
+    }
+    
     public String imprimePalavrasESeusSignificados(String prefixo) throws Exception {
         String palavras = pesquisarPalavrasQueComecamComDeterminadoPrefixo(prefixo);
         String[] array = palavras.split("\n");
@@ -115,7 +132,7 @@ public class Arvore {
         return buffer.toString();
     }
 
-    private String pesquisarPalavrasQueComecamComDeterminadoPrefixo(String prefixo) throws Exception {
+    public String pesquisarPalavrasQueComecamComDeterminadoPrefixo(String prefixo) throws Exception {
         StringBuilder buffer = new StringBuilder();
         Node nodo = getNode(prefixo);
         LinkedListOfCharHelper lista = new LinkedListOfCharHelper();
