@@ -56,6 +56,9 @@ public class Arvore {
 
     public String imprimeAPalavraESeuSignificado(String prefixo, String palavra)
             throws Exception {
+        if(!contains(prefixo) || !contains(palavra)){
+            throw new Exception("Não achou a palavra.");
+        }
         Node nodo = getNode(palavra);
         if (nodo.significado == null || nodo.significado.equals("")) {
             throw new Exception("Não achou a palavra.");
