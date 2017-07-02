@@ -8,7 +8,7 @@ public class Arvore {
     private Node root;
     private int quantidadeDeNodos;
     private int quantidadeDePalavras;
-    private String arquivo;
+    private final String arquivo;
 
     public Arvore(String arquivo) throws Exception {
         quantidadeDePalavras = 0;
@@ -27,25 +27,6 @@ public class Arvore {
 
     public int getQuantidadeDePalavras() {
         return quantidadeDePalavras;
-    }
-
-    public char getRoot() {
-        if (isEmpty()) {
-            throw new NullPointerException("Árvore vazia.");
-        }
-        return root.element;
-    }
-
-    public void setRoot(char element) {
-        if (isEmpty()) {
-            throw new NullPointerException("Árvore vazia.");
-        }
-        root.element = element;
-    }
-
-    public char getParent(char element) {
-        Node nodo = searchNodeRef(element, root);
-        return nodo.father.element;
     }
 
     private void addRoot(char element) {
@@ -72,41 +53,12 @@ public class Arvore {
         nodo.finalizaPalavra(significado);
         quantidadeDePalavras++;
     }
-
-    public void add(char element, Node father, String significado) {
-        Node nodo = searchNodeRef(father, root);
-        nodo.addSubtrees(element);
-        nodo = nodo.getSubtree(nodo.getSubtreesSize() - 1);
-        nodo.finalizaPalavra(significado);
-        quantidadeDeNodos++;
-        quantidadeDePalavras++;
-    }
-
-    public LinkedListOfNodes positionsWidth() {
-        LinkedListOfNodes li = new LinkedListOfNodes();
-        Queue<Node> fila = new Queue<>();
-        Node aux = null;
-        if (root != null) {
-            fila.enqueue(root);
-            while (!fila.isEmpty()) {
-                aux = fila.dequeue();
-                if (aux.subtrees != null) {
-                    for (int i = 0; i < aux.getSubtreesSize(); i++) {
-                        fila.enqueue(aux.getSubtree(i));
-                    }
-                }
-                li.add(aux);
-            }
-        }
-        return li;
-    }
     
     public String imprimeAPalavraESeuSignificado(String prefixo, String palavra) throws Exception{
         Node nodo = getNode(palavra);
         if(nodo.significado == null || nodo.significado.equals("")){
             throw new Exception("Não achou a palavra.");
         }
-        String palavras = pesquisarPalavrasQueComecamComDeterminadoPrefixo(prefixo);
         for(int i = 0; i < prefixo.length(); i++){
             if(prefixo.charAt(i) != palavra.charAt(i)){
                 throw new Exception("Não achou a palavra.");
@@ -167,7 +119,6 @@ public class Arvore {
                         }
                     }
                 }
-
                 if (aux.getQuantidadeDeNodosFilhos() > 1) {
                     String[] array = buffer.toString().split("\n");
                     String ultimaPalavra = array[array.length - 1];
@@ -175,7 +126,6 @@ public class Arvore {
                         palavras.push(ultimaPalavra);
                     }
                 }
-
             }
         }
         return buffer.toString();
@@ -186,8 +136,7 @@ public class Arvore {
             return null;
         }
         contador++;
-        res.add(n.element, n.getTerminouPalavra(), n.getSubtreesSize(),
-                (n.father.getSubtreesSize() - 1), n.significado);
+        res.add(n.element, n.getTerminouPalavra(), n.getSubtreesSize());
         Node aux = n;
         if (aux.getSubtreesSize() > 0) {
             positionsPre(aux.getSubtree(0), res, contador);
@@ -279,38 +228,6 @@ public class Arvore {
         return true;
     }
 
-    private Node searchNodeRef(Node element, Node target) {
-        Node res = null;
-        if (target != null) {
-            if (target.equals(element)) {
-                res = target;
-            } else {
-                if (target.getSubtreesSize() > 0) {
-                    for (int i = 0; i < target.getSubtreesSize(); i++) {
-                        res = searchNodeRef(element, target.getSubtree(i));
-                    }
-                }
-            }
-        }
-        return res;
-    }
-
-    private Node searchNodeRef(char element, Node target) {
-        Node res = null;
-        if (target != null) {
-            if (target.element == (element)) {
-                res = target;
-            } else {
-                if (target.getSubtreesSize() > 0) {
-                    for (int i = 0; i < target.getSubtreesSize(); i++) {
-                        res = searchNodeRef(element, target.getSubtree(i));
-                    }
-                }
-            }
-        }
-        return res;
-    }
-
     private void lerArquivo() throws Exception {
         if (this.arquivo == null || "".equals(this.arquivo)) {
             throw new Exception("Arquivo inexistente!");
@@ -334,9 +251,5 @@ public class Arvore {
         buffer.append("\n");
         buffer.append(this.root.toString());
         return buffer.toString();
-    }
-
-    private void cath() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

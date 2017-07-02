@@ -42,11 +42,6 @@ public class Node {
         this.subtrees.add(el, this);
     }
 
-    public boolean removeSubtree(Node n) {
-
-        return this.subtrees.remove(n);
-    }
-
     public Node getSubtree(int i) {
         return this.subtrees.get(i);
     }

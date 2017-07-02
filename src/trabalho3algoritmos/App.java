@@ -54,8 +54,6 @@ public class App {
                         break;
                 }
             }
-            System.out.println(arvore.toString());
-
         } catch (Exception e) {
             System.out.println("\nErro: " + e.getMessage());
         }
